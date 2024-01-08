@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/08_spinlock/spinlock.ko := arm-linux-gnueabihf-ld -r  -EL -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /swap/nfs/rootfs/driver/08_spinlock/spinlock.ko /swap/nfs/rootfs/driver/08_spinlock/spinlock.o /swap/nfs/rootfs/driver/08_spinlock/spinlock.mod.o;  true

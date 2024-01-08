@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/12_timer/timer.ko := arm-linux-gnueabihf-ld -r  -EL -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /swap/nfs/rootfs/driver/12_timer/timer.ko /swap/nfs/rootfs/driver/12_timer/timer.o /swap/nfs/rootfs/driver/12_timer/timer.mod.o;  true

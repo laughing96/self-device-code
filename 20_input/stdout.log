@@ -1,0 +1,7 @@
+make -C /swap/linux-6.2 M=/swap/nfs/rootfs/driver/20_input modules
+make[1]: Entering directory '/swap/linux-6.2'
+  CC [M]  /swap/nfs/rootfs/driver/20_input/keyinput.o
+scripts/Makefile.build:252: recipe for target '/swap/nfs/rootfs/driver/20_input/keyinput.o' failed
+Makefile:2023: recipe for target '/swap/nfs/rootfs/driver/20_input' failed
+make[1]: Leaving directory '/swap/linux-6.2'
+Makefile:9: recipe for target 'kernel_modules' failed

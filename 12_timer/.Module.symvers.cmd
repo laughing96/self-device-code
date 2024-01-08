@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/12_timer/Module.symvers :=  scripts/mod/modpost -m -a     -o /swap/nfs/rootfs/driver/12_timer/Module.symvers -T /swap/nfs/rootfs/driver/12_timer/modules.order -i Module.symvers -e 

@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/03_newchrled/Module.symvers :=  scripts/mod/modpost -m -a     -o /swap/nfs/rootfs/driver/03_newchrled/Module.symvers -T /swap/nfs/rootfs/driver/03_newchrled/modules.order -i Module.symvers -e 

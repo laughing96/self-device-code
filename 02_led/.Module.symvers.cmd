@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/02_led/Module.symvers :=  scripts/mod/modpost -m -a     -o /swap/nfs/rootfs/driver/02_led/Module.symvers -T /swap/nfs/rootfs/driver/02_led/modules.order -i Module.symvers -e 

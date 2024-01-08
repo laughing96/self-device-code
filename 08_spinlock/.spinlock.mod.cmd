@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/08_spinlock/spinlock.mod := printf '%s\n'   spinlock.o | awk '!x[$$0]++ { print("/swap/nfs/rootfs/driver/08_spinlock/"$$0) }' > /swap/nfs/rootfs/driver/08_spinlock/spinlock.mod

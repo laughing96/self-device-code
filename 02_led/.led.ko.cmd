@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/02_led/led.ko := arm-linux-gnueabihf-ld -r  -EL -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /swap/nfs/rootfs/driver/02_led/led.ko /swap/nfs/rootfs/driver/02_led/led.o /swap/nfs/rootfs/driver/02_led/led.mod.o;  true

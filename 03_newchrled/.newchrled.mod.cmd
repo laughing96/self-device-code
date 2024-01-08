@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/03_newchrled/newchrled.mod := printf '%s\n'   newchrled.o | awk '!x[$$0]++ { print("/swap/nfs/rootfs/driver/03_newchrled/"$$0) }' > /swap/nfs/rootfs/driver/03_newchrled/newchrled.mod

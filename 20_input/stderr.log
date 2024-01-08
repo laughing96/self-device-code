@@ -1,0 +1,29 @@
+/swap/nfs/rootfs/driver/20_input/keyinput.c: In function 'key0_handler':
+/swap/nfs/rootfs/driver/20_input/keyinput.c:74:12: error: 'struct timer_list' has no member named 'data'
+  dev->timer.data = (volatile long)dev_id;
+            ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c: In function 'keyio_init':
+/swap/nfs/rootfs/driver/20_input/keyinput.c:144:9: error: implicit declaration of function 'request_irq' [-Werror=implicit-function-declaration]
+   ret = request_irq(keyinputdev.irqkeydesc[i].irqnum, keyinputdev.irqkeydesc[i].handler, 
+         ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c:145:20: error: 'IRQF_TRIGGER_FALLING' undeclared (first use in this function)
+                    IRQF_TRIGGER_FALLING|IRQF_TRIGGER_RISING, keyinputdev.irqkeydesc[i].name, &keyinputdev);
+                    ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c:145:20: note: each undeclared identifier is reported only once for each function it appears in
+/swap/nfs/rootfs/driver/20_input/keyinput.c:145:41: error: 'IRQF_TRIGGER_RISING' undeclared (first use in this function)
+                    IRQF_TRIGGER_FALLING|IRQF_TRIGGER_RISING, keyinputdev.irqkeydesc[i].name, &keyinputdev);
+                                         ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c:153:2: error: implicit declaration of function 'init_timer' [-Werror=implicit-function-declaration]
+  init_timer(&keyinputdev.timer);
+  ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c:154:29: error: assignment from incompatible pointer type [-Werror=incompatible-pointer-types]
+  keyinputdev.timer.function = timer_function;
+                             ^
+/swap/nfs/rootfs/driver/20_input/keyinput.c: In function 'keyinput_exit':
+/swap/nfs/rootfs/driver/20_input/keyinput.c:209:3: error: implicit declaration of function 'free_irq' [-Werror=implicit-function-declaration]
+   free_irq(keyinputdev.irqkeydesc[i].irqnum, &keyinputdev);
+   ^
+cc1: some warnings being treated as errors
+make[2]: *** [/swap/nfs/rootfs/driver/20_input/keyinput.o] Error 1
+make[1]: *** [/swap/nfs/rootfs/driver/20_input] Error 2
+make: *** [kernel_modules] Error 2

@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/19_miscbeep/miscbeep.mod := printf '%s\n'   miscbeep.o | awk '!x[$$0]++ { print("/swap/nfs/rootfs/driver/19_miscbeep/"$$0) }' > /swap/nfs/rootfs/driver/19_miscbeep/miscbeep.mod

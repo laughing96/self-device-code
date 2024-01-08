@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/05_gpioled/gpioled.ko := arm-linux-gnueabihf-ld -r  -EL -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /swap/nfs/rootfs/driver/05_gpioled/gpioled.ko /swap/nfs/rootfs/driver/05_gpioled/gpioled.o /swap/nfs/rootfs/driver/05_gpioled/gpioled.mod.o;  true

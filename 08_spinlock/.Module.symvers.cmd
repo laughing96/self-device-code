@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/08_spinlock/Module.symvers :=  scripts/mod/modpost -m -a     -o /swap/nfs/rootfs/driver/08_spinlock/Module.symvers -T /swap/nfs/rootfs/driver/08_spinlock/modules.order -i Module.symvers -e 

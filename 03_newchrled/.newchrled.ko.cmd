@@ -1,0 +1,1 @@
+cmd_/swap/nfs/rootfs/driver/03_newchrled/newchrled.ko := arm-linux-gnueabihf-ld -r  -EL -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /swap/nfs/rootfs/driver/03_newchrled/newchrled.ko /swap/nfs/rootfs/driver/03_newchrled/newchrled.o /swap/nfs/rootfs/driver/03_newchrled/newchrled.mod.o;  true
