@@ -1,7 +1,8 @@
 #include <linux/types.h>
 #include <linux/kernel.h>
 #include <linux/delay.h>
-#include <linux/ide.h>
+// #include <linux/ide.h>
+#include <linux/fs.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/errno.h>
@@ -18,6 +19,8 @@
 #include <asm/mach/map.h>
 #include <asm/uaccess.h>
 #include <asm/io.h>
+#include <linux/interrupt.h>
+
 /***************************************************************
 Copyright © ALIENTEK Co., Ltd. 1998-2029. All rights reserved.
 文件名		: imx6uirq.c
@@ -53,7 +56,7 @@ struct imx6uirq_dev{
 	int minor;				/* 次设备号   */
 	struct device_node	*nd; /* 设备节点 */
 	atomic_t keyvalue;		/* 有效的按键键值 */
-	atomic_t releasekey;	/* 标记是否完成一次完成的按键，包括按下和释放 */
+	atomic_t releasekey;	/* 标记是否完成一次完成的按键，包括按下和释放 ，read 读取它来确定是否有按下动作*/ 
 	struct timer_list timer;/* 定义一个定时器*/
 	struct irq_keydesc irqkeydesc[KEY_NUM];	/* 按键描述数组 */
 	unsigned char curkeynum;				/* 当前的按键号 */
@@ -72,8 +75,8 @@ static irqreturn_t key0_handler(int irq, void *dev_id)
 	struct imx6uirq_dev *dev = (struct imx6uirq_dev *)dev_id;
 
 	dev->curkeynum = 0;
-	dev->timer.data = (volatile long)dev_id;
-	mod_timer(&dev->timer, jiffies + msecs_to_jiffies(10));	/* 10ms定时 */
+	// dev->timer.data = (volatile long)dev_id;
+	mod_timer(&dev->timer, jiffies + msecs_to_jiffies(10));	/* 10ms定时 */ /*消抖的意思是规定时间内多按几次也按照一次处理*/
 	return IRQ_RETVAL(IRQ_HANDLED);
 }
 
@@ -82,26 +85,30 @@ static irqreturn_t key0_handler(int irq, void *dev_id)
  * @param - arg	: 设备结构变量
  * @return 		: 无
  */
-void timer_function(unsigned long arg)
+static void timer_function(struct timer_list *);
+void timer_function(struct timer_list *unused)
 {
 	unsigned char value;
 	unsigned char num;
 	struct irq_keydesc *keydesc;
-	struct imx6uirq_dev *dev = (struct imx6uirq_dev *)arg;
 
-	num = dev->curkeynum;
-	keydesc = &dev->irqkeydesc[num];
 
+	num = imx6uirq.curkeynum;
+	keydesc = &imx6uirq.irqkeydesc[num];
 	value = gpio_get_value(keydesc->gpio); 	/* 读取IO值 */
 	if(value == 0){ 						/* 按下按键 */
-		atomic_set(&dev->keyvalue, keydesc->value);
+		atomic_set(&imx6uirq.keyvalue, keydesc->value);
 	}
-	else{ 									/* 按键松开 */
-		atomic_set(&dev->keyvalue, 0x80 | keydesc->value);
-		atomic_set(&dev->releasekey, 1);	/* 标记松开按键，即完成一次完整的按键过程 */			
+	else{ 	
+		printk("%d \n",0x80 | keydesc->value);
+		printk("%d \n",keydesc->value);
+										/* 按键松开 */
+		atomic_set(&imx6uirq.keyvalue, 0x80 | keydesc->value);
+		atomic_set(&imx6uirq.releasekey, 1);	/* 标记松开按键，即完成一次完整的按键过程 */			
 	}	
 }
 
+DEFINE_TIMER(key_timer, timer_function);
 /*
  * @description	: 按键IO初始化
  * @param 		: 无
@@ -143,6 +150,8 @@ static int keyio_init(void)
 	imx6uirq.irqkeydesc[0].handler = key0_handler;
 	imx6uirq.irqkeydesc[0].value = KEY0VALUE;
 	
+	printk("imx6uirq.irqkeydesc[0].value is %d\n",imx6uirq.irqkeydesc[0].value);
+	printk("KEY0VALUE %d\n",KEY0VALUE);
 	for (i = 0; i < KEY_NUM; i++) {
 		ret = request_irq(imx6uirq.irqkeydesc[i].irqnum, imx6uirq.irqkeydesc[i].handler, 
 		                 IRQF_TRIGGER_FALLING|IRQF_TRIGGER_RISING, imx6uirq.irqkeydesc[i].name, &imx6uirq);
@@ -153,8 +162,10 @@ static int keyio_init(void)
 	}
 
 	/* 创建定时器 */
-	init_timer(&imx6uirq.timer);
-	imx6uirq.timer.function = timer_function;
+	// init_timer(&imx6uirq.timer);
+	// imx6uirq.timer.function = timer_function;
+	
+	imx6uirq.timer = key_timer;
 	return 0;
 }
 
@@ -229,6 +240,7 @@ static int __init imx6uirq_init(void)
 		imx6uirq.major = MAJOR(imx6uirq.devid);
 		imx6uirq.minor = MINOR(imx6uirq.devid);
 	}
+	printk("the major is %d \n", imx6uirq.major);
 
 	/* 2、注册字符设备 */
 	cdev_init(&imx6uirq.cdev, &imx6uirq_fops);
